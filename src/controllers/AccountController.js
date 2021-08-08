@@ -20,15 +20,6 @@ function createAccount(req, res) {
          },
        }
      } */
-  /* #swagger.responses[201] = {
-       description: 'Account successfully created'
-     } */
-  /* #swagger.responses[400] = {
-       description: 'Email already used or invalid'
-     } */
-  /* #swagger.responses[403] = {
-       description: 'Already logged in'
-     } */
   if (isLoggedIn(req)) {
     return res.status(403).send({
       error: `Already logged in as user ${req.cookies.userEmail}`,
@@ -69,16 +60,6 @@ function getOtherUser(req, res) {
        required: true,
        example: 'jane.doe@test.com'
      } */
-  /* #swagger.responses[200] = {
-       description: 'User found',
-       schema: {
-         $email: "jane.doe@test.com",
-         $accountNumber: 1337,
-       },
-     } */
-  /* #swagger.responses[404] = {
-       description: 'User not found'
-     } */
   const { email } = req.params;
 
   const user = storage.findUserByEmail(email);
@@ -98,17 +79,6 @@ function getUser(req, res) {
   // #swagger.tags = ['Account Operations']
   // #swagger.summary = 'Shows your account overview'
   // #swagger.security = [{ "logged_in": [] }]
-  /* #swagger.responses[200] = {
-       description: 'User info found',
-       schema: {
-         $email: "john.doe@test.com",
-         $accountNumber: "4534",
-         $balance: "1000"
-       }
-     } */
-  /* #swagger.responses[401] = {
-       description: 'User not logged in'
-     } */
   const user = getSelfUser(req);
 
   if (!user) {
@@ -128,15 +98,6 @@ function closeAccount(req, res) {
   // #swagger.tags = ['Account Operations']
   // #swagger.summary = 'Closes your account'
   // #swagger.security = [{ "logged_in": [] }]
-  /* #swagger.responses[204] = {
-       description: 'Account closed'
-     } */
-  /* #swagger.responses[401] = {
-       description: 'User not logged in'
-     } */
-  /* #swagger.responses[403] = {
-       description: 'Account balance is not zero'
-     } */
   const user = getSelfUser(req);
 
   if (!user) {

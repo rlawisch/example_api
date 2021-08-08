@@ -6,12 +6,6 @@ function balance(req, res) {
   // #swagger.tags = ['ATM Operations']
   // #swagger.summary = 'Shows your balance'
   // #swagger.security = [{ "logged_in": [] }]
-  /* #swagger.responses[200] = {
-       description: 'Balance found'
-     } */
-  /* #swagger.responses[401] = {
-       description: 'User not logged in'
-     } */
   const user = getSelfUser(req);
 
   if (!user) {
@@ -45,12 +39,6 @@ function deposit(req, res) {
           },
         }
     } */
-  /* #swagger.responses[200] = {
-       description: 'Deposit successfully done'
-     } */
-  /* #swagger.responses[404] = {
-       description: 'Account Number not found'
-     } */
   const { accountNumber } = req.params;
   const { amount } = req.body;
 
@@ -82,12 +70,6 @@ function depositToSelf(req, res) {
           },
         }
     } */
-  /* #swagger.responses[200] = {
-       description: 'Deposit successfully done'
-     } */
-  /* #swagger.responses[401] = {
-       description: 'User not logged in'
-     } */
   const user = getSelfUser(req);
 
   if (!user) {
@@ -120,12 +102,6 @@ function withdraw(req, res) {
           },
         }
     } */
-  /* #swagger.responses[200] = {
-       description: 'Withdrawal successfully done'
-     } */
-  /* #swagger.responses[401] = {
-       description: 'User not logged in'
-     } */
   const user = getSelfUser(req);
 
   if (!user) {
@@ -170,15 +146,6 @@ function transfer(req, res) {
           },
         }
     } */
-  /* #swagger.responses[200] = {
-       description: 'Transfer successfully done'
-     } */
-  /* #swagger.responses[401] = {
-       description: 'User is not logged in or has insufficient funds'
-     } */
-  /* #swagger.responses[404] = {
-       description: 'Account Number not found'
-     } */
   const user = getSelfUser(req);
 
   if (!user) {

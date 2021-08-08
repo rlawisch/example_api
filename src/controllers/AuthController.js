@@ -19,15 +19,6 @@ function login(req, res) {
          },
        }
      } */
-  /* #swagger.responses[200] = {
-       description: 'User successfully logged in'
-    } */
-  /* #swagger.responses[401] = {
-       description: 'Invalid login details'
-    } */
-  /* #swagger.responses[403] = {
-       description: 'Already logged in'
-    } */
   if (isLoggedIn(req)) {
     return res.status(403).send({
       error: `Already logged in as user ${req.cookies.userEmail}`,
@@ -56,12 +47,6 @@ function logout(req, res) {
   // #swagger.tags = ['Auth']
   // #swagger.summary = 'Logs out of the account'
   // #swagger.security = [{ "logged_in": [] }]
-  /* #swagger.responses[200] = {
-       description: 'User successfully logged out'
-    } */
-  /* #swagger.responses[401] = {
-       description: 'Not logged in'
-    } */
   if (!isLoggedIn(req)) {
     return res.status(401).send({
       error: "User is not logged in",
