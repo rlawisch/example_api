@@ -24,5 +24,5 @@ Some sort of filesystem watch was not provided to regenerate the specs during de
 
 ## License 📖
 
-You are free to use this code, modify it and redistribute it as long as you follow the [./LICENSE](MIT license).
+You are free to use this code, modify it and redistribute it as long as you follow the [LICENSE](MIT license).
 If you do something nice with it, please, drop me a message so I can hear what sort of cool things you're up to ☺
