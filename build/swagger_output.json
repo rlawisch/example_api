@@ -1,0 +1,448 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "iXp Tech For Dummies / Tech For Techs example API",
+    "description": "A simple API for an ATM for you to explore ☺\n\nCreated with love by Rafael Lawisch and Vinícius Lora for the best internship experience ever ❤"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Log in and log out"
+    },
+    {
+      "name": "Account Operations",
+      "description": "Create and close account, see account overview and request other users' account number"
+    },
+    {
+      "name": "ATM Operations",
+      "description": "See account balance and make deposits, withdrawals and transfers"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "logged_in": {
+      "type": "apiKey",
+      "in": "cookie",
+      "name": "userEmail",
+      "description": "Needs to be logged in to access this route"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logs into account",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User successfully logged in"
+          },
+          "401": {
+            "description": "Invalid login details"
+          },
+          "403": {
+            "description": "Already logged in"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Login"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logs out of the account",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User successfully logged out"
+          },
+          "401": {
+            "description": "Not logged in"
+          }
+        },
+        "security": [
+          {
+            "logged_in": []
+          }
+        ]
+      }
+    },
+    "/user/{email}": {
+      "get": {
+        "tags": [
+          "Account Operations"
+        ],
+        "summary": "Finds other users' account number",
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Other user's e-mail",
+            "example": "jane.doe@test.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "jane.doe@test.com"
+                },
+                "accountNumber": {
+                  "type": "number",
+                  "example": 1337
+                }
+              },
+              "required": [
+                "email",
+                "accountNumber"
+              ],
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": [
+          "Account Operations"
+        ],
+        "summary": "Shows your account overview",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User info found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@test.com"
+                },
+                "accountNumber": {
+                  "type": "string",
+                  "example": "4534"
+                },
+                "balance": {
+                  "type": "string",
+                  "example": "1000"
+                }
+              },
+              "required": [
+                "email",
+                "accountNumber",
+                "balance"
+              ],
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "User not logged in"
+          }
+        },
+        "security": [
+          {
+            "logged_in": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Account Operations"
+        ],
+        "summary": "Creates an account",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Account successfully created"
+          },
+          "400": {
+            "description": "Email already used or invalid"
+          },
+          "403": {
+            "description": "Already logged in"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Login"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Account Operations"
+        ],
+        "summary": "Closes your account",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "Account closed"
+          },
+          "401": {
+            "description": "User not logged in"
+          },
+          "403": {
+            "description": "Account balance is not zero"
+          }
+        },
+        "security": [
+          {
+            "logged_in": []
+          }
+        ]
+      }
+    },
+    "/balance": {
+      "get": {
+        "tags": [
+          "ATM Operations"
+        ],
+        "summary": "Shows your balance",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Balance found"
+          },
+          "401": {
+            "description": "User not logged in"
+          }
+        },
+        "security": [
+          {
+            "logged_in": []
+          }
+        ]
+      }
+    },
+    "/deposit/{accountNumber}": {
+      "post": {
+        "tags": [
+          "ATM Operations"
+        ],
+        "summary": "Makes a deposit to specified account",
+        "description": "",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Account number to deposit",
+            "example": "1337"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deposit successfully done"
+          },
+          "404": {
+            "description": "Account Number not found"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Amount"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deposit": {
+      "post": {
+        "tags": [
+          "ATM Operations"
+        ],
+        "summary": "Makes a deposit to your account",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Deposit successfully done"
+          },
+          "401": {
+            "description": "User not logged in"
+          }
+        },
+        "security": [
+          {
+            "logged_in": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Amount"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/withdraw": {
+      "post": {
+        "tags": [
+          "ATM Operations"
+        ],
+        "summary": "Withdraws from your account",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Withdrawal successfully done"
+          },
+          "401": {
+            "description": "User not logged in"
+          }
+        },
+        "security": [
+          {
+            "logged_in": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Amount"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transfer/{accountNumber}": {
+      "post": {
+        "tags": [
+          "ATM Operations"
+        ],
+        "summary": "Transfers from your account to specified account",
+        "description": "",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Account number to transfer",
+            "example": "1337"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transfer successfully done"
+          },
+          "401": {
+            "description": "User is not logged in or has insufficient funds"
+          },
+          "404": {
+            "description": "Account Number not found"
+          }
+        },
+        "security": [
+          {
+            "logged_in": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Amount"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "john.doe@test.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        }
+      },
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "Amount": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "example": 1000
+        }
+      },
+      "required": [
+        "amount"
+      ]
+    }
+  }
+}
